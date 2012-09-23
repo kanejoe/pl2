@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script>
+      function appendResults(text) {
+        var results = document.getElementById('results');
+        results.appendChild(document.createElement('P'));
+        results.appendChild(document.createTextNode(text));
+      }
+
+      function makeRequest() {
+        var request = gapi.client.urlshortener.url.get({
+          'shortUrl': 'http://goo.gl/S1GI1'
+        });
+        request.execute(function(response) {
+          appendResults(response.longUrl);
+        });
+      }
+		
+		function makeTask() {
+
+			var list = gapi.client.tasks.tasks.list();
+			console.dir(list);
+		}
+		
+      function load() {
+        gapi.client.setApiKey('AIzaSyBJzVHl8rsNtmESkt2uSngNIRdI8ERqkwM');
+        gapi.client.load('urlshortener', 'v1', makeRequest);
+        gapi.client.load('tasks', 'v1', makeTask);
+      }
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=load"></script>
+  </head>
+  <body>
+    <div id="results"></div>
+  </body>
+</html>

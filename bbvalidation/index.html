@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todd and Tiva's Awesome Adventures</title>
+		
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link type="text/css" href="css/Aristo/Aristo.css" rel="stylesheet" />	
+		<link type="text/css" href="css/enhanced.css" rel="stylesheet" />	
+		<!-- <link rel="stylesheet" href="datepicker.css"> -->
+		
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="//code.jquery.com/ui/1.8.13/jquery-ui.min.js"></script>
+		
+        <script src="underscorebb-min.js" type="text/javascript"></script>
+        <script src="backbone.modelbinding.min.js" type="text/javascript"></script>
+        <script src="backbone.validations.js" type="text/javascript"></script>
+        <script src="js/jQuery.customInput.js" type="text/javascript"></script>
+        
+		<!--<script src="https://raw.github.com/storborg/bootstrap/c80980f6998474955f88355970b456fe83400a37/js/bootstrap-datepicker.js" type="text/javascript"></script>-->
+        <script>
+		$(function(){
+			// Datepicker
+			
+		});
+		</script>
+		
+		<script src="registration.js" type="text/javascript"></script>
+		
+		<style>
+			body {padding: 12px; }
+			body{ font: 62.5% Cambria, Georgia, serif; margin: 5px;}
+			.input-prepend .add-on, .input-append .add-on { z-index: 1; /* this is a fix */ }
+			.rowWrapper { margin 6px 0; padding: 6px;}
+		</style>
+		
+		
+    </head>
+    <body>
+        <!-- Todo App Interface -->
+        <div id="registrationapp">
+            <div class="title">
+                <h1>Register</h1>
+            </div>
+            <form id="registration_form" method="POST" action=".">
+                <div class="rowWrapper">
+                    <label for="calldate"> Date: </label>
+                    <div id="calldate_alt_error" class="errorsection"></div>
+                    <input class="medium" type="text" id="calldate"/>                    
+                    <input class="small" type="text" id="calldate_alt" disabled/>                    
+                </div>
+				<div class="rowWrapper">
+                    <label for="playername"> Player Name: </label>
+                    <div id="playername_error" class="errorsection"></div>
+                    <input id="playername" type="text"  autofocus/>             
+                </div>
+                <div class="rowWrapper">
+                    <label for="email"> Email: </label>
+                    <div id="email_error" class="errorsection"></div>
+                    <input  type="text" id="email"/>
+                </div>
+
+				<div class="rowWrapper">
+					
+						<label for="appendedInput">Staff: </label>
+						<div class="input-append clearfix">
+							<input class="medium" id="jki" name="appendedInput" size="16" type="text" value="Joe Kane" readonly>
+							<label class="add-on active"><input type="checkbox" name="staff[]" id="jk" value="3" checked="checked" disabled></label>
+						</div>
+						
+						<label for="appendedInput"></label>
+						<div class="input-append clearfix">
+							<input class="medium" id="oci" name="appendedInput" size="16" type="text" value="Olivia Dempsey" readonly>
+							<label class="add-on active"><input type="checkbox" name="staff[]" id="od" value="5"></label>
+						</div>
+					
+				</div>
+				
+                <div class="rowWrapper">
+                    <input type="button" value="Register"/>
+                </div>
+            </form>
+        </div>
+		
+		<input id="autocomplete" type="search" placeholder="enter search term" style="display:none;" />
+		<div id="selected"></div>
+		<div id="numbers"></div>
+		<div id="companies"></div>
+		
+		<form action="" method="post">	
+			<fieldset>
+				<legend>Staff</legend>
+				<input type="checkbox" name="staff" id="action" value="" disabled checked/>
+				<label for="action">Joe Kane</label>
+				
+				<input type="checkbox" name="staff" id="i-oc" value="comedy" />
+				<label for="i-oc">Olivia Dempsey</label>
+			</fieldset>
+				
+			<fieldset>
+				<legend>Send email?</legend>
+				<input type="radio" name="opinions" id="totally" value="totally" />
+				<label for="totally">Yes</label>
+				
+				<input type="radio" name="opinions" id="no-way" value="no-way" />
+				<label for="no-way">No</label>
+			</fieldset>
+			<fieldset>
+				<input type="submit" name="submit" value="submit" />
+			</fieldset>	
+		</form>
+
+		
+		
+    </body>
+</html>

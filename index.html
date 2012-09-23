@@ -1,0 +1,350 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Phonelog v2.0</title>
+	<meta name="description" content="">
+	<meta name="author" content="Joe Kane">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+	<link type="text/css" href="css/Aristo/Aristo.css" rel="stylesheet" />	
+	<link type="text/css" href="css/enhanced.css" rel="stylesheet" />	
+
+	<!-- link rel="stylesheet" href="css/style.css"> -->
+	
+	<style type="text/css">
+    /* Override some defaults */
+    html, body {
+        background-color: #eee;
+		font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+	
+	body {
+        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+    }
+	
+	.ui-datepicker, .ui-autocomplete { font-size:87.5%; }
+	
+	.container {
+        width: 820px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+    }
+	
+	/* Page header tweaks */
+      .page-header {
+        background-color: #f5f5f5;
+        padding: 20px 20px 10px;
+        margin: -20px -20px 20px;
+    }
+	
+	.content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+        -webkit-border-radius: 0 0 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 0 0 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    }
+	
+	/* Styles you shouldn't keep as they are for displaying this base example only */
+      .content .span10,
+      .content .span4 {
+        min-height: 500px;
+      }
+      /* Give a quick and non-cross-browser friendly divider */
+      .content .span4 {
+        margin-left: 0;
+        padding-left: 19px;
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+	  
+	  #addCall a {
+		width: 80%;
+		margin-bottom: 12px;
+	  }
+	  #autocomplete { width: 65%;   margin-left: 11%; border-radius: 12px; padding-right: 14px; padding-left: 14px;}
+	  .center div { margin: 0px auto; }
+	  #datepicker { margin: 21px 0; }
+	  
+	  div#addCall { margin: 0px auto; text-align: center; }
+	  
+	  /* styling the suggestions table */
+	  .cSuggestions .sHide span { display: none; }
+	  .cSuggestions { margin-top: 16px; }
+	  .cSuggestions tbody tr td:nth-child(1) span:before { content: "\00BB "; }
+	  .cSuggestions tbody tr td:nth-child(1) span {  -webkit-user-select: text;  }
+	  .cSuggestions tr td:nth-child(2), .cSuggestions tr th:nth-child(2) { text-align: right; }
+	  .cSuggestions tr td { margin: 4px 0; }
+	  .cSuggestions { font-family: 'Segoe UI', Tahoma, Arial, Helvetica, Sans-Serif; }
+		
+	.input-prepend .add-on, .input-append .add-on { z-index: 1; /* this is a fix */ }
+	.rowWrapper { margin 6px 0; padding: 6px;}
+
+	input.custom_calldate{ width: 128px;}
+	input.custom_calltime{ width: 70px; text-align:center}
+	
+	#suggestions li { margin: 4px 0; width: 58%; padding-left: 6px; list-style: none;}
+	body { -webkit-user-select: none; }
+	#suggestions li:before { content: "\00BB ";}
+	
+	.underline { text-decoration:underline; }
+	
+	#logTable tbody tr:hover {cursor: pointer;}
+	
+	.gDateParent{ margin-top: -8px; margin-bottom: 8px; }
+	
+	.noCallsMessage { display: none; width: 28%;}
+	.nCalls { margin-left: 12px; }
+	.input-prepend div { display: inline-block; }
+	
+	
+	#callsTable table td:nth-child(4) .label { text-transform: lowercase;}
+	#callsTable table td:nth-child(3) .label { text-transform: none;}
+	#callsTable table td:nth-child(1) { min-width: 80px;}
+	#callsTable table td:nth-child(4) { min-width: 130px;}
+	#callsTable table td:nth-child(3) { max-width: 190px;}
+	
+	/* https://gist.github.com/1061999 */
+	textarea {
+		-webkit-transition: height 300ms ease-out;
+		  -moz-transition: height 300ms ease-out;
+			-o-transition: height 300ms ease-out;
+			   transition: height 300ms ease-out;
+	}
+	
+	/* width of the stats template message */
+	.twEightWidth { width: 28%; }
+	.foEightWidth { width: 58%; }
+	
+	.aeForm label { font-size: 0.8em;  font-style: italic; margin-bottom: 0px; padding-left: 0.3em;}
+	.goInline div { display: inline-block; padding-right: 12px;}
+	
+	.error { color: hsl(1, 45%, 50%); border-color: hsl(1, 45%, 50%); border-width: 2px;}
+	
+	
+	/*  match media --- media queries */
+	#fxd-header { display: none; }
+	#sidebar { display: none; }
+	
+	</style>
+	
+</head>
+<body>
+
+<div id="fxd-header" class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+	<div class="container">
+	  <a class="brand" href="#">Joseph Kane &amp; Company</a>
+	  <ul class="nav">
+		<li class="active"><a href="#">Home</a></li>
+		<li><a href="#about">About</a></li>
+		<li><a href="#contact">Contact</a></li>
+	  </ul>
+	  <form action="" class="navbar-form pull-right">
+		<input class="input-small" type="text" placeholder="Username">
+		<input class="input-small" type="password" placeholder="Password">
+		<button class="btn" type="submit">Sign in</button>
+	  </form>
+	</div>
+  </div>
+</div>
+
+
+<div class="container">
+	<div class="content" id="header">
+        <div class="page-header">
+          <h1>Phonelog <small id="curDate"></small></h1>
+        </div>
+		
+        <div class="row">
+			<div class="span7">
+				
+				<h3 class="gDateParent"><span class="gDate">Today's List</span><small class="nCalls"></small></h3>			
+				<div id="stats"></div>
+				<div id="callsTable"></div>
+				
+				<!-- <div id="pagination"></div>-->
+				<div id="app-view"></div>
+				
+			</div>
+			
+			<div class="span3" id="sidebar" style=" padding-left: 32px;">
+				<h3>&nbsp;</h3>
+				
+				<div id="addCall">
+					<a  href="#/new" data-controls-modal="form-modal" data-backdrop="true" data-keyboard="true" class="btn btn-large btn-info">
+						<span class="underline">A</span>dd New Call&nbsp;
+						<i class="icon-plus icon-white"></i>
+					</a>
+				</div>
+				
+
+				<input id="autocomplete" type="search" placeholder="find caller" style="display:none; margin-top: 12px;" x-webkit-speech/>
+				<div id="suggestions" class="suggestions"></div>
+				
+				<div class="center">
+					<div id="datepicker"></div>
+				</div>
+				
+			</div>
+        </div>
+	</div>
+</div>
+
+<footer>
+ <span>JKCo</span>
+</footer>
+
+
+<script type="text/x-jquery-tmpl" id="tableH-template">
+	<table class="table table-bordered table-striped callsTable">
+		<thead>
+			<th>Date</th>
+			<th>Time</td>
+			<th>Caller</th>
+			<th>Message</th>
+		</thead>
+		<tbody id="logTableBody"></tbody>
+	</table>
+</script>
+
+<script type="text/x-jquery-tmpl" id="add-edit-template">
+ <div class="well aeForm">
+		<a class="cancel close closeForm">&times;</a>
+		<div class="input-prepend">
+			<div><label for="cdate" class="add-on">Date</label>
+			<input id="cdate" type="text" class="span2" value="{{=cdate}}"></div>
+			<input id="calldate" type="hidden" class="span2" value="{{=calldate}}">
+			
+			<div><label for="ctimenozero" class="add-on">@</label>
+			<input class="span1" id="ctimenozero" size="16" type="text" value="{{=ctimenozero}}"></div>
+		</div>
+		
+		<div class="goInline">
+			<div><label for="caller" class="">Caller</label><input type="text" id="caller" autofocus value="{{=caller}}"></div>
+			<div><label for="company" class="">Company</label><input type="text" id="company" value="{{=company}}"></div>
+		</div>
+		
+		<label for="phone" class="">Number</label><input type="text" id="phone" value="{{=phone}}">
+		
+		<div class="goInline">
+			<div>
+				<label class="" for="sendemail">Send email?</label>
+				<select id="sendemail">
+					<option value="yes">Yes</option>
+					<option selected value="no">No</option>
+				</select>
+			</div>
+			<div>
+				<label class="" for="callDir">Incoming / Outgoing</label>
+				<select id="callDir">
+					<option value="in" {{#if callDir==="in" }} selected {{/if}}>Incoming</option>
+					<option value="out" {{#if callDir==="out" }} selected {{/if}}>Outgoing</option>
+				</select>
+			</div>
+		</div>
+		
+		<label for="message" class="">Message</label><textarea type="text" id="message" class="span6" rows="4">{{=message}}</textarea><br/>
+		
+		<a href="#" class="closeForm" class="cancel">&laquo; Cancel</a>&nbsp; <input type="button" id="save" value="Save" class="btn btn-info">
+  </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="stats-template">
+	<div class="alert {{#if total }}foEightWidth{{else}} twEightWidth {{/if}}">
+		{{#if total }}<a class="close" data-dismiss="alert">×</a>{{/if}}
+		<strong>{{#if total }}{{=total}}{{else}} No{{/if}} {{#if total===1}}Call{{else}}Calls{{/if}} </strong>
+		{{#if total }}
+			<span style="padding-left: 3em;">{{#if outgoing }} {{=outgoing}} {{else}} 0 {{/if}} outgoing </span>
+			<span style="padding-left: 3em;">{{#if incoming }} {{=incoming}} {{else}} 0 {{/if}} incoming </span>
+		{{/if}}
+	</div>
+</script>
+
+
+<script type="text/x-jquery-tmpl" id="add-call-template">
+  <div class="well">
+    <a href="#/new">Add New Item</a>
+  </div>
+</script>
+
+
+<script type="text/x-jquery-tmpl" id="tmplCase" >
+
+    <td>{{=cdateS}}
+		{{#if callDay}}<br/><span class="label label-default">{{=callDay}}</span>{{/if}}
+	</td>
+    <td>{{=ctime}}</td>
+    <td><span class="caller">{{=caller}}</span>
+		{{#if company}}<span class="label label-default company">{{=company}}</span>{{/if}}
+		
+		{{#if phone}}
+			<br/><span class="label label-important phone">{{=phone}}</span>
+		{{/if}}	
+	</td>
+	<td class="opts">
+		{{#if message}}
+			<span id="pp-{{=callid}}" class="blob label label-success message" href="#">message</span>
+		{{else}}
+			<span class="label">no message</span>
+		{{/if}}	
+		{{#if callDir==='in'}}<span class="label label-info">{{=callDir}}</span>{{else}} <span class="label label-warning">{{=callDir}}</span> {{/if}}
+		<a class="" href="#/edit/{{=callid}}">edit</a>
+	</td>
+
+</script>
+
+<script id="tmplPagination" type="text/x-jquery-tmpl">
+{{#if pages>1}}
+	<div class="pagination">
+		<ul>
+			<li class="prev {{#if page===1}}disabled{{/if}}"><a href="#">&laquo; Previous</a></li>
+			{{#each arrPages}}
+				<li class="curPage {{#if $parent.parent.data.page===$itemNumber}}active{{/if}}"><a href="#">{{=$itemNumber}}</a></li>	
+			{{/each}}
+			<li class="next {{#if page===pages}}disabled{{/if}}"><a href="#">Next &raquo;</a></li>
+			
+		</ul>
+	</div>
+{{/if}}
+
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="js/pusher.min.js"></script>
+
+<script src="js/underscore-min.js"></script>
+<script src="js/underscore.string.js"></script>
+<script src="js/backbone-utd.js"></script>
+<!--<script src="js/backbone.localStorage.js"></script>-->
+<script src="js/backbone.modelbinding.min.js"></script>
+<script src="js/backbone.memento.min.js"></script>
+<script src="js/date.format.js"></script>
+<script src="js/jsrender.js"></script>
+
+<script src="js/backbone.validations.js" type="text/javascript"></script>
+<script src="js/jQuery.customInput.js" type="text/javascript"></script>
+<script src="js/jquery.autoresize.js" type="text/javascript"></script>
+
+<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="js/plugins.js"></script>
+<script src="js/script.js"></script>
+<script src="js/script-AddEditView.js"></script>
+<script src="js/script-header.js"></script>
+<script src="js/script-caller.js"></script>
+<script src="js/script-pagination.js"></script>
+<script src="js/script-form.js"></script>
+<script src="js/script-router.js"></script>
+<script src="js/matchmedia.js"></script>
+<!-- end scripts-->
+
+</body>
+</html>
